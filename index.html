@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academic Research Assistant & Multi-Language Summarizer</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <header>
+        <h1>Academic Research Assistant</h1>
+        <p>Multi-Language Summarizer & Research Companion</p>
+    </header>
+
+    <main>
+        <!-- Text Input Options -->
+        <section class="input-section">
+            <h2>Input Research</h2>
+            <textarea id="inputText" placeholder="Paste your research text here..." rows="6"></textarea>
+            <input type="url" id="urlInput" placeholder="Or enter URL to summarize article" />
+            <input type="file" id="fileInput" accept=".txt,.pdf,.docx" />
+            <button id="summarizeButton">Summarize</button>
+        </section>
+
+        <!-- Split Screen View -->
+        <section class="split-screen">
+            <div class="original-text">
+                <h3>Original Text</h3>
+                <div id="originalOutput">Your original text will appear here...</div>
+            </div>
+            <div class="summary-text">
+                <h3>Summary</h3>
+                <div id="summaryOutput">Summary will appear here after processing...</div>
+            </div>
+        </section>
+
+        <!-- Language Translation -->
+        <section class="translation-section">
+            <h2>Translate Summary</h2>
+            <select id="langSelect">
+                <option value="">Select Language</option>
+                <option value="fr">French</option>
+                <option value="es">Spanish</option>
+                <option value="de">German</option>
+                <option value="pt">Portuguese</option>
+                <option value="it">Italian</option>
+                <option value="ja">Japanese</option>
+                <option value="ko">Korean</option>
+                <option value="zh">Chinese</option>
+                <option value="ar">Arabic</option>
+                <option value="hi">Hindi</option>
+            </select>
+            <button id="translateButton">Translate</button>
+            <div id="translationOutput"></div>
+        </section>
+
+        <!-- Key Findings and Citations -->
+        <section class="insights">
+            <h2>Key Findings</h2>
+            <ul id="keyFindings"></ul>
+
+            <h2>Keywords</h2>
+            <ul id="keywords"></ul>
+        </section>
+
+        <!-- Chart Section -->
+        <section class="chart-section">
+            <h2>Text Analysis</h2>
+            <canvas id="summaryChart" width="400" height="200"></canvas>
+        </section>
+
+        <!-- Export Options -->
+        <section class="export-section">
+            <h2>Export</h2>
+            <button id="exportPdf">Export as PDF</button>
+            <button id="exportWord">Export as Word</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Academic Research Assistant</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

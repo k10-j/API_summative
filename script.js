@@ -1,3 +1,4 @@
+// Global variables
 const summarizeButton = document.getElementById('summarizeButton');
 const translateButton = document.getElementById('translateButton');
 const inputText = document.getElementById('inputText');
@@ -12,10 +13,10 @@ const exportWordBtn = document.getElementById('exportWord');
 
 let currentChart = null;
 
-// Configuration object for API keys
+// Configuration - Add your API keys here
 const CONFIG = {
     HUGGINGFACE_API_KEY: 'hf_1JJVoJkblJmkKmJVVYMnRrCWUXWPJnuJWW', 
-    TRANSLATION_API_KEY: '',
+    TRANSLATION_API_KEY: ' 138b3b927dmsh3e22f698f7988cbp10ea2ejsn629d064b2412', 
 };
 
 // Event Listeners
@@ -234,25 +235,24 @@ function getTopSentences(sentences, scores, count) {
         .map(item => item.sentence);
 }
 
-// Translation function
+// Translation function using Free Google Translator RapidAPI
 async function translateText(text, targetLang) {
-    if (CONFIG.TRANSLATION_API_KEY) {
-        try {
-            return await apiTranslateText(text, targetLang);
-        } catch (error) {
-            console.error("API translation failed:", error);
+    const url = `https://free-google-translator.p.rapidapi.com/external-api/free-google-translator?from=en&to=${targetLang}&query=${encodeURIComponent(text)}`;
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-RapidAPI-Key': CONFIG.TRANSLATION_API_KEY,
+            'X-RapidAPI-Host': 'free-google-translator.p.rapidapi.com'
         }
-    }
-    
-    // Mock translation for demo purposes
-    return createMockTranslation(text, targetLang);
-}
+    });
 
-// API-based translation (placeholder for real implementation)
-async function apiTranslateText(text, targetLang) {
-    // This would be replaced with actual translation API call
-    // Example: Google Translate API, Azure Translator, etc.
-    throw new Error("Translation API not configured");
+    if (!response.ok) {
+        throw new Error(`Translation API request failed: ${response.status}`);
+    }
+
+    const result = await response.json();
+    return result.data?.translatedText || result.translatedText || '';
 }
 
 // Mock translation for demonstration
@@ -318,6 +318,7 @@ function updateList(listElement, items) {
     });
 }
 
+// Update chart with text analysis
 function updateChart(originalText, summaryText) {
     const ctx = document.getElementById('summaryChart').getContext('2d');
     
@@ -389,7 +390,42 @@ function handleFileUpload(e) {
 
 // Export handlers
 function handleExportPdf() {
-    showAlert('PDF export feature requires additional libraries like jsPDF.');
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Get content
+    const originalText = document.getElementById('originalOutput').textContent;
+    const summaryText = document.getElementById('summaryOutput').textContent;
+    const translationText = document.getElementById('translationOutput').textContent;
+
+    let y = 10;
+    doc.setFontSize(16);
+    doc.text('Academic Research Assistant', 10, y);
+    y += 10;
+
+    doc.setFontSize(12);
+    doc.text('Original Text:', 10, y);
+    y += 8;
+    doc.setFontSize(10);
+    doc.text(doc.splitTextToSize(originalText, 180), 10, y);
+    y += doc.getTextDimensions(doc.splitTextToSize(originalText, 180)).h + 6;
+
+    doc.setFontSize(12);
+    doc.text('Summary:', 10, y);
+    y += 8;
+    doc.setFontSize(10);
+    doc.text(doc.splitTextToSize(summaryText, 180), 10, y);
+    y += doc.getTextDimensions(doc.splitTextToSize(summaryText, 180)).h + 6;
+
+    if (translationText) {
+        doc.setFontSize(12);
+        doc.text('Translation:', 10, y);
+        y += 8;
+        doc.setFontSize(10);
+        doc.text(doc.splitTextToSize(translationText, 180), 10, y);
+    }
+
+    doc.save('summary.pdf');
 }
 
 function handleExportWord() {

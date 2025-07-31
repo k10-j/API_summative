@@ -134,6 +134,11 @@ button:active {
     margin-top: 1rem;
 }
 
+#summaryChart {
+    height: 120px !important;
+    max-height: 120px !important;
+}
+
 .translation-section select {
     width: 100%;
     padding: 0.8rem;

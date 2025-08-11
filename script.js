@@ -13,7 +13,7 @@ const exportWordBtn = document.getElementById('exportWord');
 
 let currentChart = null;
 
-// Configuration - Add your API keys here
+// Configuration - my api keys 
 const CONFIG = {
     HUGGINGFACE_API_KEY: 'hf_1JJVoJkblJmkKmJVVYMnRrCWUXWPJnuJWW', 
     TRANSLATION_API_KEY: ' 138b3b927dmsh3e22f698f7988cbp10ea2ejsn629d064b2412', 
@@ -87,7 +87,7 @@ async function handleTranslate() {
         showSuccessMessage('Translation completed!');
     } catch (err) {
         console.error('Translation error:', err);
-        showErrorMessage(translationOutput, 'Translation service unavailable. This feature requires API access.');
+        showErrorMessage(translationOutput, 'Translation service unavailable. Please try again later.');
     } finally {
         setButtonLoading(translateButton, false);
     }
@@ -95,7 +95,7 @@ async function handleTranslate() {
 
 // Summarization function with fallback
 async function summarizeText(text) {
-    // Try API summarization first
+    // my API-based summarization first
     if (CONFIG.HUGGINGFACE_API_KEY) {
         try {
             return await apiSummarizeText(text);
@@ -171,7 +171,7 @@ function calculateSentenceScores(sentences, fullText) {
         const words = sentence.toLowerCase().replace(/[^a-z\s]/g, '').split(/\s+/);
         let score = 0;
         
-        // Position bonus (first and last sentences are often important)
+        // Position bonus 
         if (index === 0 || index === sentences.length - 1) {
             score += 0.5;
         }
@@ -183,7 +183,7 @@ function calculateSentenceScores(sentences, fullText) {
             }
         });
         
-        // Length penalty (very short or very long sentences are less preferred)
+        // Length penalty 
         const length = words.length;
         if (length < 5 || length > 30) {
             score *= 0.7;
@@ -216,7 +216,7 @@ function calculateWordFrequency(text) {
     return freq;
 }
 
-// Get top sentences based on scores
+// top sentences based on scores
 function getTopSentences(sentences, scores, count) {
     const sentenceData = sentences.map((sentence, index) => ({
         sentence: sentence.trim(),
@@ -279,18 +279,18 @@ function updateInsights(originalText, summaryText) {
     const findings = extractKeyFindings(summaryText);
     updateList(keyFindings, findings);
 
-    // Extract keywords
+    // Extracting keywords
     const keywordList = extractKeywords(summaryText);
     updateList(keywords, keywordList);
 }
 
-// Extract key findings from text
+// Extracting key findings from text
 function extractKeyFindings(text) {
     const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 10);
     return sentences.slice(0, 5).map(s => s.trim());
 }
 
-// Extract keywords from text
+// Extracting keywords from text
 function extractKeywords(text) {
     const stopWords = ['the', 'is', 'in', 'and', 'a', 'of', 'to', 'for', 'on', 'with', 'as', 'by', 'an', 'are', 'that', 'from', 'this', 'be', 'have', 'has', 'was', 'were', 'been', 'will', 'would', 'could', 'should', 'can', 'may', 'might'];
     const words = text.toLowerCase().replace(/[^a-z\s]/g, '').split(/\s+/);
@@ -308,7 +308,7 @@ function extractKeywords(text) {
         .map(([word]) => word);
 }
 
-// Update list elements
+// Updating list elements
 function updateList(listElement, items) {
     listElement.innerHTML = '';
     items.forEach(item => {
@@ -318,7 +318,7 @@ function updateList(listElement, items) {
     });
 }
 
-// Update chart with text analysis
+// Updating chart with text analysis
 function updateChart(originalText, summaryText) {
     const ctx = document.getElementById('summaryChart').getContext('2d');
     

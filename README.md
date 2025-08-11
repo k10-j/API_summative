@@ -20,19 +20,19 @@ API_summative/
 #docker build -t katelor/api_summative:v1 .
 -Quick local test run (maps host 8080 -> container 8080)
 docker run -p 8080:8080 katelor/api_summative:v1
-# Then visit http://localhost:8080 to verify the site loads locally
+Then visit http://localhost:8080 to verify the site loads locally
 
 2) Publish image to Docker Hub (exact commands)
 # Log in (I used web flow)
 docker login
 
-# Pushed the image
+- Pushed the image
 docker push katelor/api_summative:v1
 After pushing, I confirmed the image is available on Docker Hub at docker.io/katelor/api_summative:v1.
 
 3) Lab setup (Web01, Web02, Lb01)
 I used the provided lab repo as a starting point:
-# cloned the lab
+ -cloned the lab
 git clone https://github.com/waka-man/web_infra_lab
 cd web_infra_lab
 # start the three-node environment (web-01, web-02, lb-01)
@@ -40,7 +40,7 @@ docker compose up -d
 
 4) Deploying the image on Web01 and Web02 (exact commands to run on each web node)
 ssh ubuntu@localhost -p 2211
-# on remote:
+-on remote:
 docker pull katelor/api_summative:v1
 docker run -d --name app --restart unless-stopped \  -p 8080:8080 \ katelor/api_summative:v1
 
@@ -73,7 +73,7 @@ Notes
 •	check enables health checks so HAProxy only sends traffic to healthy instances.
 •	http-response set-header X-Served-By %[srv_name] adds a response header we use to confirm which server handled each request.
 After editing the file, reload HAProxy using:
-# sudo haproxy -sf $(pidof haproxy) -f /etc/haproxy/haproxy.cfg
+ : sudo haproxy -sf $(pidof haproxy) -f /etc/haproxy/haproxy.cfg
 
 6) Testing steps & evidence (how I verified round-robin works)
  # Basic browser test
